@@ -6,4 +6,4 @@ Priority: optional
 Maintainer: Shuhao Wu
 Architecture: all
 Homepage: https://github.com/shuhaowu/trafficcop
-Depends: tc, kmod-netem, uhttpd
+Depends: tc, kmod-netem, uhttpd, kmod-ifb

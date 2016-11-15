@@ -24,8 +24,14 @@ Accessible at `http://<router ip>:8080`
 
 ### Installation ###
 
-To install this, compile an ipk and install it on your device:
+To install this, compile an ipk and transfer it to the device:
+    # git clone https://github.com/gled-rs/trafficcop.git
+    # cd trafficcop
+    # make
+    # scp build/trafficcop-*.ipk root@<router ip>:/root
+    # ssh root@<router ip>
 
+then install it on your device:
     # opkg update
     # opkg install trafficcop-*.ipk
 
@@ -39,7 +45,7 @@ This means you can access traffic cop at `http://<router ip>:8080`.
 
 - Updated from original source to work with default network on openwrt ( 192.168.1.x ).
 - Fixed a bug in current_profile which was returning the status of a fixed IP instead of the current client.
-- Original source was only applying rules to the down link, now rules are applied both for download/upload.
+- Original source was only applying rules to the down link, now rules are applied both for download/upload ( using  netem and ifb )
 - Updated some profiles.
 
 ### TODO ###
