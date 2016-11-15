@@ -12,32 +12,44 @@ set_profile() {
 
   # sets up the bandwidth limiter
   tc class add dev br-lan parent 1: classid 1:$client_id htb rate $bandwidth
+  tc class add dev ifb0 parent 1: classid 1:$client_id htb rate $bandwidth
 
   # sets up netem
   if [ "$loss" = "" ]; then
     tc qdisc add dev br-lan parent 1:$client_id handle ${client_id}66: netem delay $delay
+    tc qdisc add dev ifb0 parent 1:$client_id handle ${client_id}66: netem delay $delay
   else
     tc qdisc add dev br-lan parent 1:$client_id handle ${client_id}66: netem delay $delay loss $loss
+    tc qdisc add dev ifb0 parent 1:$client_id handle ${client_id}66: netem delay $delay loss $loss
   fi
 
   # sets up the filter
-  tc filter add dev br-lan protocol ip parent 1:0 prio 3 u32 match ip dst 192.168.10.${client_id}/32 flowid 1:$client_id
+  tc filter add dev br-lan protocol ip parent 1:0 prio 3 u32 match ip dst 192.168.1.${client_id}/32 flowid 1:$client_id
+  tc filter add dev br-lan protocol ip parent ffff: prio 3 u32 match ip src 192.168.1.${client_id}/32 action mirred egress redirect dev ifb0
+  tc filter add dev ifb0 protocol ip parent 1:0 prio 3 u32 match ip src 192.168.1.${client_id}/32 flowid 1:$client_id
 }
 
 reset_profile() {
   client_id=$1
 
   # delete the filter
-  handle=$(tc filter show dev br-lan | grep $client_id | cut -d " " -f 10)
+  handle=$(tc filter show dev ifb0 | grep $client_id | cut -d " " -f 10)
   if [ "$handle" != "" ]; then
-    tc filter del dev br-lan parent 1: handle $handle prio 3 protocol ip u32
+    tc filter del dev ifb0 parent 1: handle $handle prio 3 protocol ip u32
   fi
+
+  handle=$(tc filter show dev br-lan | grep $client_id | cut -d " " -f 10)
+  for i in $handle; do 
+    tc filter del dev br-lan parent 1: handle $i prio 3 protocol ip u32;
+  done
 
   # deletes the netem
   tc qdisc del dev br-lan parent 1:$client_id
+  tc qdisc del dev ifb0 parent 1:$client_id
 
   # deletes bandwidth limiter
   tc class del dev br-lan classid 1:$client_id
+  tc class del dev ifb0 classid 1:$client_id
 }
 
 stop_if_not_post() {

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Traffic Cop</title>
+	<title>Network Conditioner</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style type="text/css">
 /*
@@ -110,18 +110,18 @@ button.selected-setting { border-color: #FF00FF; border-width: 2px; color: #FF00
 </head>
 <body>
 	<div id="container">
-		<h4> ch00z ur internetz </h4>
+		<h4> Select the profile you want to apply to your connection: </h4>
 		<div id="loading-message"> Changing the settings... </div>
     <button class="connection-settings" id="none"> No Profile </button>
 		<p>(Best available connection)</p>
 		<button class="connection-settings" id="3g"> 3G </button>
-		<p>(780kbps bandwidth, 0% packets dropped, 100ms delay) </p>
+		<p>(780kbps bandwidth, 2% packets dropped, 200ms delay) </p>
 		<button class="connection-settings" id="dsl"> DSL</button>
-		<p>(2mbps bandwidth, 0% packets dropped, 5ms delay)</p>
+		<p>(2mbps bandwidth, 0% packets dropped, 60ms delay)</p>
 		<button class="connection-settings" id="edge"> Edge (2G) </button>
-		<p>(240kbps bandwidth, 0% packets dropped, 440ms delay)</p>
+		<p>(240kbps bandwidth, 6% packets dropped, 500ms delay)</p>
 		<button class="connection-settings" id="bad"> Bad Network</button>
-		<p>(1mbps bandwidth, 10% packets dropped, 200ms delay)</p>
+		<p>(1mbps bandwidth, 10% packets dropped, 250ms delay)</p>
 		<button class="connection-settings" id="very_bad"> Very Bad Network</button>
 		<p>(500kbps bandwidth, 30% packets dropped, 600ms delay)</p>
 	</div>

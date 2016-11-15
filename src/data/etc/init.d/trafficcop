@@ -38,4 +38,5 @@ start_service() {
 	procd_append_param command "-t" "10"
 
 	procd_close_instance
+        modprobe sch_netem
 }
